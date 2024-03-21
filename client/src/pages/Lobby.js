@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 // import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import { SERVER_ADDR, GET_TITLES_ENDPOINT } from '../common';
+import { SERVER_ADDR, GET_CODE_BLOCKS_ENDPOINT } from '../common';
 
 function Lobby() {
-  const [titles, setTitles] = useState([]);
+  const [codeBlocks, setCodeBlocks] = useState([]);
 
   // useEffect with no dependencies would let us have a similar behavior to
-  // componentDidMount and only fetch the code block titles once
+  // componentDidMount and only fetch the code block titles and code fields once
   useEffect(() => {
-    axios.get(SERVER_ADDR + GET_TITLES_ENDPOINT)
+    axios.get(SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
       .then(function (response) {
-        setTitles(response.data)
+        setCodeBlocks(response.data)
       })
       .catch(function (error) {
         console.error(error)
@@ -26,8 +26,8 @@ function Lobby() {
           Choose code block
         </p>
         <ul>
-          {titles.map((title) => (
-            <p key={title}>{title}</p>
+          {codeBlocks.map((data) => (
+            <p key={data}>{data.title}</p>
           ))}
         </ul>
       </header>

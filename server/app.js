@@ -31,10 +31,10 @@ async function connectDb() {
 connectDb()
 
 
-app.get('/code-block-titles', async (_, res) => {
-  console.log("Fetching code block titles!")
-  const data = await CodeBlock.find({})
-  res.send(data.map(obj => obj.title));
+app.get('/code-blocks', async (_, res) => {
+  console.log("Fetching code block!")
+  const data = await CodeBlock.find({}, {_id: 0, title: 1, code: 1});
+  res.send(data.map(obj => obj));
 })
 
 
