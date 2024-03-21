@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 // import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import SERVERADDR from '../common';
+import { SERVER_ADDR, GET_TITLES_ENDPOINT } from '../common';
 
 function Lobby() {
   const [titles, setTitles] = useState([]);
 
+  // useEffect with no dependencies would let us have a similar behavior to
+  // componentDidMount and only fetch the code block titles once
   useEffect(() => {
-    axios.get(SERVERADDR + 'code-block-titles')
+    axios.get(SERVER_ADDR + GET_TITLES_ENDPOINT)
       .then(function (response) {
         setTitles(response.data)
       })

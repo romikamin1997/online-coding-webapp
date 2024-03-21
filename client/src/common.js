@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
-const SERVERADDR = "http://localhost:5005/";
+const SERVER_ADDR = "http://localhost:5005/";
+const GET_TITLES_ENDPOINT = "code-block-titles";
 
-export default SERVERADDR;
+export default {SERVER_ADDR, GET_TITLES_ENDPOINT};
