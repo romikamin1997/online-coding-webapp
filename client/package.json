@@ -6,11 +6,15 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
+    "highlight.js": "^11.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "react-simple-code-editor": "^0.13.1",
     "socket.io": "^4.7.5",
     "web-vitals": "^2.1.4"
   },
@@ -38,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@types/prismjs": "^1.26.3",
     "eslint-plugin-react": "^7.34.1"
   }
 }
