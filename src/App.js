@@ -1,22 +1,10 @@
 import './App.css';
+import Lobby from './pages/Lobby';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-        Choose code block
-        </p>
-        <p>
-        block1
-        </p>
-        <p>
-        block2
-        </p>
-        <p>
-        block3
-        </p>
-      </header>
+      <Lobby />
     </div>
   );
 }
