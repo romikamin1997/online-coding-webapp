@@ -1,24 +1,37 @@
-import React from '@testing-library/react';
+import React, { useState, useEffect } from 'react';
+// import { Link } from "react-router-dom";
+import axios from 'axios';
+
+import SERVERADDR from '../common';
 
 function Lobby() {
-    return (
-      <div className="Lobby">
-        <header className="Lobby-header">
-          <p>
+  const [titles, setTitles] = useState([]);
+
+  useEffect(() => {
+    axios.get(SERVERADDR + 'code-block-titles')
+      .then(function (response) {
+        setTitles(response.data)
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
+  }, [])
+
+  return (
+    <div className="Lobby">
+      <header className="Lobby-header">
+        <p>
           Choose code block
-          </p>
-          <p>
-          block1
-          </p>
-          <p>
-          block2
-          </p>
-          <p>
-          block3
-          </p>
-        </header>
-      </div>
-    );
-  }
+        </p>
+        <ul>
+          {titles.map((title) => (
+            <p key={title}>{title}</p>
+          ))}
+        </ul>
+      </header>
+    </div>
+  );
+}
+
 
 export default Lobby;
