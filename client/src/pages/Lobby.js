@@ -1,3 +1,5 @@
+import React from '@testing-library/react';
+
 function Lobby() {
     return (
       <div className="Lobby">

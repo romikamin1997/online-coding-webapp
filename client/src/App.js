@@ -1,3 +1,4 @@
+import React from '@testing-library/react';
 import './App.css';
 import Lobby from './pages/Lobby';
 
