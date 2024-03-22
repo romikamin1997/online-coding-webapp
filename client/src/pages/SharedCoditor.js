@@ -14,7 +14,7 @@ function HomeBtn() {
     </nav>
 } 
 
-function Coditor() {
+export default function Coditor() {
     const location = useLocation()
     const [code, setCode] = React.useState(location.state.code)
 
@@ -42,5 +42,5 @@ function Coditor() {
     );
 }
 
-export default Coditor;
+
 
