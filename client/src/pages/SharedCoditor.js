@@ -8,7 +8,11 @@ import 'highlight.js/styles/default.css'
 
 hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
 
-
+function HomeBtn() {
+    return <nav className='nav'>
+        <a href='/' className="home">Home</a>
+    </nav>
+} 
 
 function Coditor() {
     const location = useLocation()
@@ -16,6 +20,7 @@ function Coditor() {
 
     return (
         <div className="row">
+            <HomeBtn></HomeBtn>
             <div className="col-10">
                 <h1>Direct Code</h1>
                 <fieldset>
