@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-
 import { SERVER_ADDR, GET_CODE_BLOCKS_ENDPOINT } from '../common';
 
 

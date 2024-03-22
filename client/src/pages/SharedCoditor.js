@@ -1,14 +1,13 @@
 // Shared code editor componenet
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Editor from 'react-simple-code-editor';
 import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
 
 // eslint-disable-next-line no-unused-vars
 import hljs from 'highlight.js/lib/core';
 import 'highlight.js/styles/default.css';
-
-
 
 hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
 
@@ -20,7 +19,23 @@ function HomeBtn() {
 
 export default function Coditor() {
     const location = useLocation()
-    const [code, setCode] = React.useState(location.state.code)
+    const [code, setCode] = useState(location.state.code)
+    
+    // CLIENT SOCKET -------------------
+    useEffect(() => { 
+        const socket = io("http://localhost:3001")
+        
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        return () => {
+            socket.disconnect()
+            
+        }
+    }, [])
+
+    
 
     return (
         <div className="row">
@@ -45,6 +60,5 @@ export default function Coditor() {
         </div>
     );
 }
-
 
 
