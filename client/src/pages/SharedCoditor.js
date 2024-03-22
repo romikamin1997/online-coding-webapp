@@ -2,15 +2,19 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Editor from 'react-simple-code-editor';
+import { Link } from "react-router-dom";
+
 // eslint-disable-next-line no-unused-vars
 import hljs from 'highlight.js/lib/core';
-import 'highlight.js/styles/default.css'
+import 'highlight.js/styles/default.css';
+
+
 
 hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
 
 function HomeBtn() {
     return <nav className='nav'>
-        <a href='/' className="home">Home</a>
+        <Link to="/">Home</Link>
     </nav>
 } 
 
