@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
   socket.on('update-code', (code) => {
     console.debug("Recieved update-code event")
     latestCode = code
-    io.emit('update-code', latestCode)
+    socket.broadcast.emit('update-code', latestCode)
   })
 
   socket.on('disconnect', () => {
