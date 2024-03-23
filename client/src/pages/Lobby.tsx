@@ -12,6 +12,8 @@ function Lobby() {
   // titles and code fields once upon mounting
   useEffect(() => {
     // Sending a get request to the server to fetch all code block templates
+    const endpoint = SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT
+    console.debug(`Sending request to ${endpoint}`)
     axios.get(SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
       .then(function (response) {
         // Update the current codeBlocks to the response retrieved from the server 
