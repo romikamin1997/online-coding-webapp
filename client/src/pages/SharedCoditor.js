@@ -5,11 +5,10 @@ import Editor from 'react-simple-code-editor';
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 
-// eslint-disable-next-line no-unused-vars
-import hljs from 'highlight.js/lib/core';
-import 'highlight.js/styles/default.css';
-
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism.css'; //Example style, you can use another
 
 function HomeBtn() {
     return <nav className='nav'>
@@ -47,10 +46,10 @@ export default function Coditor() {
                     </legend>
                     <Editor
                         value={code}
-                        highlight={code =>  hljs.highlight(
+                        highlight={code => highlight(
                             code,
-                            { language: 'javascript' }
-                        ).value}
+                            languages.js
+                        )}
                         padding={10}
                         readOnly={false}
                         onValueChange={(changeCode) => { setCode(changeCode) }}
