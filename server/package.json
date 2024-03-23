@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npm run prod",
-    "build": "react-scripts build",
-    "dev": "nodemon app.js",
-    "prod": "node app.js"
+    "start": "npx tsx app.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -14,10 +11,13 @@
     "express": "^4.19.1",
     "http": "^0.0.1-security",
     "mongoose": "^8.2.2",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/node": "^20.11.30",
     "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.1"
+    "eslint-plugin-react": "^7.34.1",
+    "tsx": "^4.7.1"
   }
 }

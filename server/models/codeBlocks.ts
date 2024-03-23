@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 const CodeBlockSchema = new Schema({
@@ -16,4 +16,4 @@ const CodeBlockSchema = new Schema({
   },
 })
 
-module.exports = mongoose.model('CodeBlock', CodeBlockSchema)
+export default mongoose.model('CodeBlock', CodeBlockSchema)

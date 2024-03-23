@@ -1,10 +1,10 @@
 require('dotenv').config()
 
-const mongoose = require('mongoose')
-const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const CodeBlock = require('./models/codeBlocks')
+import mongoose from 'mongoose';
+import express from 'express';
+import http from 'http';
+import cors from 'cors';
+import CodeBlock from './models/codeBlocks';
 const port = process.env.PORT || 5001;
 const app = express();
 
@@ -25,6 +25,9 @@ const io = require('socket.io')(server, {
 
 async function connectDb() {
   try {
+    if (process.env.MONGODB_URI === undefined) {
+      throw new Error('MONGODB_URI is not defined in env. Cannot start server!');
+    }
     mongoose.set('strictQuery', false)
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       ssl: true
@@ -41,7 +44,7 @@ connectDb()
 app.get('/code-blocks', async (_, res) => {
   console.debug("Fetching code block!")
   // 0/1 will instruct the query to ignore or send the field respectively
-  const data = await CodeBlock.find({}, { _id: 0, title: 1, code: 1 , solution: 1});
+  const data = await CodeBlock.find({}, { _id: 0, title: 1, code: 1, solution: 1 });
   res.send(data);
 })
 
@@ -53,18 +56,18 @@ let countClient = 0;
 let latestCode = "";
 
 io.on("connection", (socket) => {
-  
+
   // Send a 'client-connected' event **only to newly connected client** 
   // containing the current number of connected client till now and the latest
   // code version updated by all clients.
   // Notice that latestCode could be empty. This will happen on the first connected client.
-  socket.emit('client-connected', {count : countClient, code : latestCode})
-  
+  socket.emit('client-connected', { count: countClient, code: latestCode })
+
   if (countClient === 0) {
     console.debug("Mentor connected");
   }
   countClient++;
-  
+
   // We want to listen to the 'update-code' event sent by the clients connected to the socket
   // In order to change the latest code accordingly and then send an 'update-code' event
   // to **all** clients so we maintain synchronization in the client side.
@@ -73,7 +76,7 @@ io.on("connection", (socket) => {
     latestCode = code
     io.emit('update-code', latestCode)
   })
-  
+
   socket.on('disconnect', () => {
     countClient--;
     // If all clients disconnect from the socket, latestCode should be deleted
