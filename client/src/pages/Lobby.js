@@ -34,7 +34,7 @@ function Lobby() {
             // We're leveraging the fact that the location object is stateful and 
             // passed into the routed component
             <li key={block.title}>
-              <Link to="/coditor" state={{title: block.title, code: block.code }}>{block.title}</Link>
+              <Link to="/coditor" state={{title: block.title, code: block.code, solution: block.solution }}>{block.title}</Link>
             </li>
           ))}
         </ul>

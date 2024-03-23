@@ -5,6 +5,8 @@ import Editor from 'react-simple-code-editor';
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import { SERVER_ADDR } from '../common';
+import Popup from 'reactjs-popup';
+
 
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
@@ -32,6 +34,11 @@ export default function Coditor() {
     // amount of connected clients to the socket and by this we can determine if the current
     // client is the mentor or some student.
     const [isMentor, setIsMentor] = useState(false)
+    // Helpers to maintain the Popup component
+    const [open, setOpen] = useState(false)
+    const closePopup = () => { setOpen(false) }
+
+    const solution = location.state.solution
 
 
     // CLIENT SOCKET -------------------
@@ -46,7 +53,7 @@ export default function Coditor() {
             // Check if there is additional code to render upon connection.
             // That is, if the server already have some code updated by another client
             // then new connected clients will render the latest code maintained by the server.
-            if (countAndCode.code !== ""){
+            if (countAndCode.code !== "") {
                 setCode(countAndCode.code)
             }
         })
@@ -80,10 +87,20 @@ export default function Coditor() {
                         onValueChange={(changeCode) => {
                             setCode(changeCode)
                             socket.emit("update-code", changeCode)
+                            // Once the student achieved the right solution
+                            // display the smiley popup!
+                            if (changeCode === solution) {
+                                setOpen(true)
+                            }
                         }}
                     />
                 </fieldset>
             </div>
+            <Popup open={open} closeOnDocumentClick onClose={closePopup}>
+                <div className="modal">
+                    <img className="smiley-image" src={require("../assets/smiley.jpg")} alt={"Image not found"} />
+                </div>
+            </Popup>
         </div>
     );
 }
