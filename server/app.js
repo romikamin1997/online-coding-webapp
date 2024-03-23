@@ -49,21 +49,28 @@ server.listen(port, () => console.log(`Listening on port ${port}`));
 // SOCKET -------------------
 // The amount of clients connected to the current io socket
 let countClient = 0;
+let latestCode = "";
 
 io.on("connection", (socket) => {
-
-  socket.emit('client-count', countClient)
+  
+  socket.emit('client-connected', {count : countClient, code : latestCode})
+  
   if (countClient === 0) {
     console.debug("Mentor connected");
   }
   countClient++;
-
+  
   socket.on('update-code', (code) => {
     console.debug("Recieved update-code event")
+    latestCode = code
     io.emit('update-code', code)
   })
-  socket.on("disconnect", () => {
+  
+  socket.on('disconnect', () => {
     countClient--;
+    if (countClient === 0) {
+      latestCode = ""
+    }
     console.debug("Client disconnected clientCount = " + countClient);
   });
 

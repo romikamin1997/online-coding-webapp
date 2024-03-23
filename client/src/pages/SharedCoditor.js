@@ -28,8 +28,13 @@ export default function Coditor() {
     useEffect(() => {
         const socketVar = io(SERVER_ADDR)
         setSocket(socketVar)
-        socketVar.on('client-count', (count) => {
-            setIsMentor(count == 0)
+        // We're using socketVar becuse setSocket is async and we won't
+        // necessarily have `socket` initialized for the following lines
+        socketVar.on('client-connected', (countAndCode) => {
+            setIsMentor(countAndCode.count == 0)
+            if (countAndCode.code !== ""){
+                setCode(countAndCode.code)
+            }
         })
         socketVar.on('update-code', (changeCode) => {
             setCode(changeCode)
