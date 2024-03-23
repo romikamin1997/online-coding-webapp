@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import { SERVER_ADDR, GET_CODE_BLOCKS_ENDPOINT } from '../common';
+import { SERVER_ADDR, GET_CODE_BLOCKS_ENDPOINT } from '../common.tsx';
 
 
 function Lobby() {
-  const [codeBlocks, setCodeBlocks] = useState([]);
+  const [codeBlocks, setCodeBlocks] = useState<Array<{title: string, code: string, solution: string}>>([]);
 
   // useEffect with no dependencies would let us have a similar behavior to
   // componentDidMount of a class component and only fetch the code block

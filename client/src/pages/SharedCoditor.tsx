@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Editor from 'react-simple-code-editor';
 import { Link } from "react-router-dom";
-import { io } from "socket.io-client";
-import { SERVER_ADDR } from '../common';
+import { Socket, io } from "socket.io-client";
+import { SERVER_ADDR } from '../common.tsx';
 import Popup from 'reactjs-popup';
 
 
@@ -28,7 +28,7 @@ export default function Coditor() {
     // React will re-render Coditor component, every time we change code with setCode
     const [code, setCode] = useState(location.state.code)
     // Having socket in the component state lets us access it as part of the Editor component
-    const [socket, setSocket] = useState()
+    const [socket, setSocket] = useState<Socket>()
     // Having isMentor in the component state lets us decide if the editor should be readonly.
     // The setter is used upon the client connection to the server socket as we recieve the 
     // amount of connected clients to the socket and by this we can determine if the current
@@ -49,7 +49,7 @@ export default function Coditor() {
         // necessarily have `socket` initialized for the following lines
         socketVar.on('client-connected', (countAndCode) => {
             // Update isMentor to true if he is the first client to connect to the server 
-            setIsMentor(countAndCode.count == 0)
+            setIsMentor(countAndCode.count === 0)
             // Check if there is additional code to render upon connection.
             // That is, if the server already have some code updated by another client
             // then new connected clients will render the latest code maintained by the server.
@@ -86,7 +86,7 @@ export default function Coditor() {
                         readOnly={isMentor}
                         onValueChange={(changeCode) => {
                             setCode(changeCode)
-                            socket.emit("update-code", changeCode)
+                            socket!.emit("update-code", changeCode)
                             // Once the student achieved the right solution
                             // display the smiley popup!
                             if (changeCode === solution) {
@@ -98,7 +98,7 @@ export default function Coditor() {
             </div>
             <Popup open={open} closeOnDocumentClick onClose={closePopup}>
                 <div className="modal">
-                    <img className="smiley-image" src={require("../assets/smiley.jpg")} alt={"Image not found"} />
+                    <img className="smiley-image" src={require("../assets/smiley.jpg")} alt={"Smiley Face"} />
                 </div>
             </Popup>
         </div>
