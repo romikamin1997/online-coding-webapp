@@ -22,10 +22,6 @@ const io = require('socket.io')(3001, {
   },
 })
 
-// The amount of clients connected to the current io socket
-let countClient = 0;
-
-let latestCodeVersion;
 
 async function connectDb() {
   try {
@@ -44,27 +40,34 @@ connectDb()
 
 app.get('/code-blocks', async (_, res) => {
   console.log("Fetching code block!")
-  const data = await CodeBlock.find({}, {_id: 0, title: 1, code: 1});
+  const data = await CodeBlock.find({}, { _id: 0, title: 1, code: 1 });
   res.send(data.map(obj => obj));
 })
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
 // SOCKET -------------------
-  io.on("connection", (socket) => {
-    if (countClient === 0) {
-      //io.emit('code-unlocked', {uuid: 'server'})
-      console.log("Client = Mentor");
-    }
-    countClient++;
-    console.log("New client connected with clientCount = " + countClient);
+// The amount of clients connected to the current io socket
+let countClient = 0;
 
-    socket.on("disconnect", () => {
-      console.log("Client disconnected clientCount = " + countClient );
-      countClient--;
-    });
+io.on("connection", (socket) => {
 
+  socket.emit('client-count', countClient)
+  if (countClient === 0) {
+    console.debug("Mentor connected");
+  }
+  countClient++;
+
+  socket.on('update-code', (code) => {
+    console.debug("Recieved update-code event")
+    io.emit('update-code', code)
+  })
+  socket.on("disconnect", () => {
+    countClient--;
+    console.debug("Client disconnected clientCount = " + countClient);
   });
+
+});
 
 
 
