@@ -43,7 +43,7 @@ export default function Coditor() {
 
     // CLIENT SOCKET -------------------
     useEffect(() => {
-        const socketVar = io(SERVER_ADDR)
+        const socketVar = io("ws://" + SERVER_ADDR, {transports: ['websocket']})
         setSocket(socketVar)
         // We're using socketVar becuse setSocket is async and we won't
         // necessarily have `socket` initialized for the following lines
