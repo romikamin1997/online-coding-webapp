@@ -23,25 +23,25 @@ function Lobby() {
     var xhr = new XMLHttpRequest()
 
     // get a callback when the server responds
-    xhr.addEventListener('load', () => {
-      // update the state of the component with the result here
-      console.log(JSON.parse(xhr.response))
-      setCodeBlocks(JSON.parse(xhr.response))
-    })
-    // open the request with the verb and the url
-    xhr.open('GET', SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
-    // send the request
-    xhr.send()
+    // xhr.addEventListener('load', () => {
+    //   // update the state of the component with the result here
+    //   console.log(JSON.parse(xhr.response))
+    //   setCodeBlocks(JSON.parse(xhr.response))
+    // })
+    // // open the request with the verb and the url
+    // xhr.open('GET', SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
+    // // send the request
+    // xhr.send()
 
 
-    // axios.get(SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
-    //   .then(function (response) {
-    //     // Update the current codeBlocks to the response retrieved from the server 
-    //     setCodeBlocks(response.data)
-    //   })
-    //   .catch(function (error) {
-    //     console.error(error)
-    //   });
+    axios.get(SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
+      .then(function (response) {
+        // Update the current codeBlocks to the response retrieved from the server 
+        setCodeBlocks(response.data)
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
   }, [])
 
   return (
