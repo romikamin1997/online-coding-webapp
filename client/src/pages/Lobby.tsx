@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import { PROTOCOL, SERVER_ADDR, GET_CODE_BLOCKS_ENDPOINT } from '../common.tsx';
+import { SERVER_ADDR, GET_CODE_BLOCKS_ENDPOINT } from '../common.tsx';
 
 function getData() {
   
@@ -15,7 +15,7 @@ function Lobby() {
   // titles and code fields once upon mounting
   useEffect(() => {
     // Sending a get request to the server to fetch all code block templates
-    const endpoint = PROTOCOL + SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT
+    const endpoint = SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT
     console.debug(`Sending request to ${endpoint}`)
 
     axios.get(endpoint)
