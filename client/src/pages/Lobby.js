@@ -8,10 +8,13 @@ function Lobby() {
   const [codeBlocks, setCodeBlocks] = useState([]);
 
   // useEffect with no dependencies would let us have a similar behavior to
-  // componentDidMount and only fetch the code block titles and code fields once
+  // componentDidMount of a class component and only fetch the code block
+  // titles and code fields once upon mounting
   useEffect(() => {
+    // Sending a get request to the server to fetch all code block templates
     axios.get(SERVER_ADDR + GET_CODE_BLOCKS_ENDPOINT)
       .then(function (response) {
+        // Update the current codeBlocks to the response retrieved from the server 
         setCodeBlocks(response.data)
       })
       .catch(function (error) {
@@ -27,6 +30,9 @@ function Lobby() {
         </h1>
         <ul>
           {codeBlocks.map((block) => (
+            // https://reactrouter.com/en/main/hooks/use-location#locationstate
+            // We're leveraging the fact that the location object is stateful and 
+            // passed into the routed component
             <li key={block.title}>
               <Link to="/coditor" state={{title: block.title, code: block.code }}>{block.title}</Link>
             </li>

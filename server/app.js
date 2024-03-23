@@ -39,7 +39,8 @@ connectDb()
 
 
 app.get('/code-blocks', async (_, res) => {
-  console.log("Fetching code block!")
+  console.debug("Fetching code block!")
+  // 0/1 will instruct the query to ignore or send the field respectively
   const data = await CodeBlock.find({}, { _id: 0, title: 1, code: 1 });
   res.send(data);
 })
@@ -53,6 +54,10 @@ let latestCode = "";
 
 io.on("connection", (socket) => {
   
+  // Send a 'client-connected' event **only to newly connected client** 
+  // containing the current number of connected client till now and the latest
+  // code version updated by all clients.
+  // Notice that latestCode could be empty. This will happen on the first connected client.
   socket.emit('client-connected', {count : countClient, code : latestCode})
   
   if (countClient === 0) {
@@ -60,14 +65,20 @@ io.on("connection", (socket) => {
   }
   countClient++;
   
+  // We want to listen to the 'update-code' event sent by the clients connected to the socket
+  // In order to change the latest code accordingly and then send an 'update-code' event
+  // to **all** clients so we maintain synchronization in the client side.
   socket.on('update-code', (code) => {
     console.debug("Recieved update-code event")
     latestCode = code
-    io.emit('update-code', code)
+    io.emit('update-code', latestCode)
   })
   
   socket.on('disconnect', () => {
     countClient--;
+    // If all clients disconnect from the socket, latestCode should be deleted
+    // so upon the next coding session the clients will recieve a fresh state from the
+    // server.
     if (countClient === 0) {
       latestCode = ""
     }
