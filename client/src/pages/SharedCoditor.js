@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Editor from 'react-simple-code-editor';
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
+import { SERVER_ADDR } from '../common';
 
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
@@ -14,27 +15,32 @@ function HomeBtn() {
     return <nav className='nav'>
         <Link to="/">Home</Link>
     </nav>
-} 
+}
 
 export default function Coditor() {
     const location = useLocation()
     const [code, setCode] = useState(location.state.code)
-    
+    const [socket, setSocket] = useState()
+    const [isMentor, setIsMentor] = useState(false)
+
+
     // CLIENT SOCKET -------------------
-    useEffect(() => { 
-        const socket = io("http://localhost:3001")
-        
-        socket.on('connect', () => {
-            console.log('Connected to server');
-        });
+    useEffect(() => {
+        const socketVar = io(SERVER_ADDR)
+        setSocket(socketVar)
+        socketVar.on('client-count', (count) => {
+            setIsMentor(count == 0)
+        })
+        socketVar.on('update-code', (changeCode) => {
+            setCode(changeCode)
+        })
 
         return () => {
-            socket.disconnect()
-            
+            console.log("disconnecting!")
+            socketVar.disconnect()
         }
     }, [])
 
-    
 
     return (
         <div className="row">
@@ -51,13 +57,15 @@ export default function Coditor() {
                             languages.js
                         )}
                         padding={10}
-                        readOnly={false}
-                        onValueChange={(changeCode) => { setCode(changeCode) }}
+                        readOnly={isMentor}
+                        onValueChange={(changeCode) => {
+                            setCode(changeCode)
+                            socket.emit("update-code", changeCode)
+                        }}
                     />
                 </fieldset>
             </div>
         </div>
     );
 }
-
 
